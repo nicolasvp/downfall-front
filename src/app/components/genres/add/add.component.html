@@ -1,0 +1,38 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Agregar Género</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a [routerLink]="['/home']">Inicio</a></li>
+                <li class="breadcrumb-item active">Agregar</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Agregar Género</h5>
+                <form class="form-material form-horizontal m-t-40">
+                    <div class="form-group row">
+                        <label class="col-md-12" for="example-text">Nombre</label>
+                        <div class="col-md-12">
+                            <input type="text" id="example-text" name="example-text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-12" for="desc">Descripción</label>
+                        <div class="col-md-12">
+                            <textarea class="form-control" rows="3" id="desc"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Agregar</button>
+                    <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

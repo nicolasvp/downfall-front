@@ -1,0 +1,41 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Géneros</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Géneros</a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-xlg-12 col-md-12">
+        <div class="card el-element-overlay">
+            <div class="card-body">
+                <div class="card-body">
+                    <h5 class="card-title">Todos los géneros</h5>
+                    <div class="row m-t-30">
+                        <!-- column -->
+                        <div class="col-lg-2 col-md-3" *ngFor="let genre of genres">
+                            <div class="el-card-item">
+                                <div class="el-card-avatar el-overlay-1"> <img src="assets/dist/images/alb8.jpg" alt="user" />
+                                    <div class="el-overlay">
+                                        <ul class="el-info">
+                                            <li><a class="img-circle font-20" href="#"><i class="ti-control-play"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="el-card-content text-left">
+                                    <h5 class="card-title m-b-0">{{ genre.name }}</h5>
+                                    <small class="text-muted">{{ genre.created_at }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
