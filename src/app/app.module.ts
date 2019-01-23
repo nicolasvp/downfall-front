@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 // Componentes
 import { AppComponent } from './app.component';
@@ -37,6 +38,7 @@ import { AddGenreComponent } from './components/genres/add/add.component';
     BrowserModule,
     HttpClientModule,
     app_routing,
+    FormsModule,
   ],
   providers: [
     GenreService,

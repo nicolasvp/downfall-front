@@ -15,18 +15,24 @@
     <div class="col-12">
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title">Agregar Género</h5>
-                <form class="form-material form-horizontal m-t-40">
+                <h5 class="card-title">Complete los campos</h5>
+                <form class="form-material form-horizontal m-t-40" (ngSubmit)="store()">
                     <div class="form-group row">
-                        <label class="col-md-12" for="example-text">Nombre</label>
+                        <label class="col-md-12" for="name">Nombre</label>
                         <div class="col-md-12">
-                            <input type="text" id="example-text" name="example-text" class="form-control">
+                            <input type="text" name="name" class="form-control" [(ngModel)]="genre.name">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-12" for="desc">Descripción</label>
+                        <label class="col-md-12" for="name">Imagen</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" rows="3" id="desc"></textarea>
+                            <input type="text" name="image" class="form-control" [(ngModel)]="genre.image">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-12" for="description">Descripción</label>
+                        <div class="col-md-12">
+                            <textarea class="form-control" name="description" rows="3" [(ngModel)]="genre.description"></textarea>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-info waves-effect waves-light m-r-10">Agregar</button>
