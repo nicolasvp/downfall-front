@@ -19,7 +19,7 @@ import {app_routing} from './app.routes';
 
 // Servicios
 import { GenreService } from './services/genre.service';
-import { AddGenreComponent } from './components/genres/add/add.component';
+import { GenreFormComponent } from './components/genres/form/form.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +32,7 @@ import { AddGenreComponent } from './components/genres/add/add.component';
     ArtistsComponent,
     AlbumsComponent,
     TracksComponent,
-    AddGenreComponent
+    GenreFormComponent
   ],
   imports: [
     BrowserModule,

@@ -24,4 +24,19 @@ export class GenreService {
   store(genre: Genre): Observable<Genre>{
     return this._httpClient.post<Genre>(this.url, genre, { headers: this.httpHeaders });
   }
+
+  // Obtener los datos para actualizar género
+  getGenre(id): Observable<Genre>{
+    return this._httpClient.get<Genre>(`${this.url}/${id}`);
+  }
+
+  // Actualiza los datos del género
+  update(genre: Genre): Observable<Genre>{
+    return this._httpClient.put<Genre>(`${this.url}/${genre.id}`, genre, { headers: this.httpHeaders });
+  }
+
+  // Elimina el géneros
+  delete(id: number): Observable<Genre>{
+    return this._httpClient.delete<Genre>(`${this.url}/${id}`, { headers: this.httpHeaders });
+  }
 }
