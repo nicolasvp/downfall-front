@@ -12,6 +12,7 @@ declare var $ :any;
 export class GenreFormComponent implements OnInit {
 
   private genre: Genre = new Genre();
+  private errors: string[]; // Maneja los errores que son devueltos desde el service
 
   constructor(private _genreService: GenreService, private _router: Router, private _activatedRoute: ActivatedRoute) { }
 
@@ -22,20 +23,23 @@ export class GenreFormComponent implements OnInit {
 
   // Guarda el nuevo género y luego redirige hacia todos los géneros
   store(): void {
-    console.log(this.genre);
     this._genreService.store(this.genre).subscribe(
-      genre => {
+      response => {
         this._router.navigate(['/genres'])
         $.toast({
          heading: 'Éxito',
-         text: `El Género ${genre.name} se ha creado.`,
+         text: `El Género ${response.genre.name} se ha creado.`,
          position: 'top-right',
          loaderBg:'#ff6849',
          icon: 'success',
          hideAfter: 3500,
          stack: 6
        });
-      }
+     },
+     err => {
+       this.errors = err.error.errors as string[];
+         console.log(this.errors);
+     }
     );
   }
 
@@ -55,17 +59,21 @@ export class GenreFormComponent implements OnInit {
   // Actualiza los datos del género enviando el objeto genre al servicio, luego redirige hacia todos los géneros
   update(): void {
     this._genreService.update(this.genre).subscribe(
-      genre => {
+      response => {
         this._router.navigate(['/genres'])
         $.toast({
          heading: 'Éxito',
-         text: `El Género ${genre.name} se ha actualizado.`,
+         text: `El Género ${response.genre.name} se ha actualizado.`,
          position: 'top-right',
          loaderBg:'#ff6849',
          icon: 'success',
          hideAfter: 3500,
          stack: 6
        });
+      },
+      err => {
+        this.errors = err.error.errors as string[];
+        console.log(this.errors);
       }
     )
   }

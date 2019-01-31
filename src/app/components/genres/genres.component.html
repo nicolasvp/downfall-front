@@ -16,8 +16,12 @@
             <div class="card-body">
                 <div class="card-body">
                     <h5 class="card-title">Todos los géneros</h5>
-                    <div class="row m-t-30">
-                        <!-- column -->
+                    <div class="row m-t-30" *ngIf="genres?.length == 0">
+                      <div class="col-lg-12 col-md-12">
+                        <div class="alert alert-info">No existen registros</div>
+                      </div>
+                    </div>
+                    <div class="row m-t-30" *ngIf="genres?.length > 0">
                         <div class="col-lg-2 col-md-3" *ngFor="let genre of genres">
                             <div class="el-card-item">
                                 <div class="el-card-avatar el-overlay-1"> <img src="assets/dist/images/alb8.jpg" alt="user" />

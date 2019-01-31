@@ -35,7 +35,7 @@ export class GenresComponent implements OnInit {
 
           $.toast({
            heading: 'Éxito',
-           text: `El Género ${genre.name} ha sido eliminado.`,
+           text: `El Género ${response.genre.name} ha sido eliminado.`,
            position: 'top-right',
            loaderBg:'#ff6849',
            icon: 'success',
