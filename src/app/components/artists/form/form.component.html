@@ -1,0 +1,82 @@
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Agregar Artista</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a [routerLink]="['/home']">Inicio</a></li>
+                <li class="breadcrumb-item active">Agregar</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Complete los campos</h5>
+                <!-- Display de errores desde el backend -->
+                <ul class="alert alert-danger" *ngIf="errors?.length > 0">
+                  <li *ngFor="let error of errors">
+                    {{ error }}
+                  </li>
+                </ul>
+                <form class="form-material form-horizontal m-t-40" #artistForm="ngForm">
+                    <div class="form-group row">
+                        <label class="col-md-12" for="name">Nombre</label>
+                        <div class="col-md-12">
+                            <input type="text" name="name" class="form-control" [(ngModel)]="artist.name" #name="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <div class="help-block" *ngIf="name.invalid && (name.dirty || name.touched)">
+                              <p *ngIf="name.errors.required">Este campo es obligatorio</p>
+                              <p *ngIf="name.errors.minlength">Este campo debe contener al menos 1 caracter</p>
+                              <p *ngIf="name.errors.maxlength">Este campo no debe superar los 100 caracteres</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-12" for="name">Imagen</label>
+                        <div class="col-md-12">
+                            <input type="text" name="image" class="form-control" [(ngModel)]="artist.image">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-12" for="name">Enlace de Spotify</label>
+                        <div class="col-md-12">
+                            <input type="text" name="name" class="form-control" [(ngModel)]="artist.spotifyLink" #spotify="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <div class="help-block" *ngIf="spotify.invalid && (spotify.dirty || spotify.touched)">
+                              <p *ngIf="spotify.errors.required">Este campo es obligatorio</p>
+                              <p *ngIf="spotify.errors.minlength">Este campo debe contener al menos 1 caracter</p>
+                              <p *ngIf="spotify.errors.maxlength">Este campo no debe superar los 200 caracteres</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-12" for="name">Enlace de Youtube</label>
+                        <div class="col-md-12">
+                            <input type="text" name="name" class="form-control" [(ngModel)]="artist.youtubeLink" #youtube="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <div class="help-block" *ngIf="youtube.invalid && (youtube.dirty || youtube.touched)">
+                              <p *ngIf="youtube.errors.required">Este campo es obligatorio</p>
+                              <p *ngIf="youtube.errors.minlength">Este campo debe contener al menos 1 caracter</p>
+                              <p *ngIf="youtube.errors.maxlength">Este campo no debe superar los 200 caracteres</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-12" for="name">Género</label>
+                        <div class="col-md-12">
+                          <select class="form-control" name="genre" [(ngModel)]="artist.genre">
+                            <option value="" selected>Seleccione</option>
+                            <option *ngFor="let genre of genres" [ngValue]="genre">{{ genre.name }}</option>
+                          </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success waves-effect waves-light m-r-10" (click)="store()" *ngIf="!artist.id else updateButton" [disabled]="!artistForm.form.valid">Agregar</button>
+                    <ng-template #updateButton>
+                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10" (click)="update()" [disabled]="!artistForm.form.valid">Actualizar</button>
+                    </ng-template>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

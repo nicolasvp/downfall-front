@@ -13,13 +13,15 @@ import { ArtistsComponent } from './components/artists/artists.component';
 import { AlbumsComponent } from './components/albums/albums.component';
 import { TracksComponent } from './components/tracks/tracks.component';
 import { GenresComponent } from './components/genres/genres.component';
+import { GenreFormComponent } from './components/genres/form/form.component';
+import { ArtistFormComponent } from './components/artists/form/form.component';
 
 // Rutas
-import {app_routing} from './app.routes';
+import { app_routing } from './app.routes';
 
 // Servicios
 import { GenreService } from './services/genre.service';
-import { GenreFormComponent } from './components/genres/form/form.component';
+import { ArtistService } from './services/artist.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,8 @@ import { GenreFormComponent } from './components/genres/form/form.component';
     ArtistsComponent,
     AlbumsComponent,
     TracksComponent,
-    GenreFormComponent
+    GenreFormComponent,
+    ArtistFormComponent
   ],
   imports: [
     BrowserModule,
@@ -42,6 +45,7 @@ import { GenreFormComponent } from './components/genres/form/form.component';
   ],
   providers: [
     GenreService,
+    ArtistService,
   ],
   bootstrap: [AppComponent]
 })

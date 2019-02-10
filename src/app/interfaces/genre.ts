@@ -3,5 +3,4 @@ export class Genre {
   name: string;
   description: string;
   image: string;
-  createdAt: string;
 }
