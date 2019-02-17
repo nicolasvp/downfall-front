@@ -1,0 +1,33 @@
+<ul *ngIf="pages?.length > 0" class="pagination">
+
+  <!-- Botón para ir a la primera página -->
+  <li class="page-item" [ngClass]="child_paginator.number == 0? 'disabled page-item': 'page-item'">
+    <a class="page-link" [routerLink]="['/tracks/page/', 0]">&laquo;</a>
+  </li>
+
+  <!-- Botón para ir a la página anterior -->
+  <!-- Se muestra el boton si está en una pagina mayor a la 1 -->
+  <li class="page-item" *ngIf="child_paginator.number > 0">
+    <a class="page-link" [routerLink]="['/tracks/page/', (child_paginator.number - 1)]">Anterior</a>
+  </li>
+
+  <li class="page-item" *ngFor="let page of pages" [ngClass]="(page - 1) == child_paginator.number? 'active': ''">
+    <!-- Deshabilita el link de la página actual -->
+    <span class="page-link" *ngIf="(page - 1) == child_paginator.number">{{ page }}</span>
+    <!-- Las paginas comienzan desde el 0 -->
+    <a class="page-link" *ngIf="(page - 1) != child_paginator.number" [routerLink]="['/tracks/page/', (page - 1)]">{{ page }}</a>
+  </li>
+
+  <!-- Botón para ir a la siguiente página -->
+  <!-- Se muestra el boton si está en una pagina menor a la última -->
+  <li class="page-item" *ngIf="child_paginator.number < (child_paginator.totalPages - 1)">
+    <a class="page-link" [routerLink]="['/tracks/page/', (child_paginator.number + 1)]">Siguiente</a>
+  </li>
+
+  <!-- Botón para ir a la última página -->
+  <li class="page-item" [ngClass]="child_paginator.number == (child_paginator.totalPages - 1)? 'disabled page-item': 'page-item'">
+    <a class="page-link" [routerLink]="['/tracks/page/', (child_paginator.totalPages - 1)]">&raquo;</a>
+  </li>
+</ul>
+<br>
+<span class="text-muted" style="font-size: 13px;">Total de registros: {{ total_elements }}</span>

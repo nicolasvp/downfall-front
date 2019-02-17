@@ -26,6 +26,7 @@ export class GenresComponent implements OnInit {
   // Elimina el género seleccionado
   delete(genre: Genre): void{
 
+    // Popup de confirmación para eliminar el registro
     if(confirm(`¿Está seguro de eliminar el género ${genre.name}?`)){
       this._genreService.delete(genre.id).subscribe(
         response => {
@@ -35,7 +36,7 @@ export class GenresComponent implements OnInit {
 
           $.toast({
            heading: 'Éxito',
-           text: `El Género ${response.genre.name} ha sido eliminado.`,
+           text: `El Género ${genre.name} ha sido eliminado.`,
            position: 'top-right',
            loaderBg:'#ff6849',
            icon: 'success',
@@ -46,7 +47,5 @@ export class GenresComponent implements OnInit {
         }
       )
     }
-
   }
-
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from "rxjs";
-import { catchError } from 'rxjs/operators';
-import { Artist } from '../interfaces/Artist';
+import { catchError, map } from 'rxjs/operators';
+import { Track } from '../interfaces/Track';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 declare var $ :any;
@@ -9,24 +9,27 @@ declare var $ :any;
 @Injectable({
   providedIn: 'root'
 })
-export class ArtistService {
+export class TrackService {
 
   constructor(private _httpClient: HttpClient, private _router: Router) { }
 
-  private url: string = 'http://localhost:8080/api/artists';
+  private url: string = 'http://localhost:8080/api/tracks';
 
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
-  // Obtiene todos los artistas
-  getArtists(): Observable<Artist[]>{
-    // Se realiza un cast del tipo Artist, tambien se puede hacer con un pipe y map
-    return this._httpClient.get<Artist[]>(this.url);
+  // Obtiene todos los tracks por página
+  getTracks(page: number): Observable<any>{
+    return this._httpClient.get(this.url + '/page/' + page).pipe(
+      map( (response: any) => {
+        return response;
+      })
+    );
   }
 
-  // Guarda el nuevo artista
+  // Guarda el nuevo track
   // Se deja el tipo de retorno como any por el wraper del responseEntity de Spring
-  store(artist: Artist): Observable<any>{
-    return this._httpClient.post<any>(this.url, artist, { headers: this.httpHeaders }).pipe(
+  store(track: Track): Observable<any>{
+    return this._httpClient.post<any>(this.url, track, { headers: this.httpHeaders }).pipe(
       catchError(e => {
 
         // Catch de error de tipo bad request(400) desde el backend, lo enviará hacia el componente para que lo maneje
@@ -47,9 +50,9 @@ export class ArtistService {
     );
   }
 
-  // Obtener los datos para actualizar artista, si obtiene un error desde el backend muestra una alerta y redirige al index de artistas
-  getArtist(id: number): Observable<Artist>{
-    return this._httpClient.get<Artist>(`${this.url}/${id}`).pipe(
+  // Obtener los datos para actualizar el track, si obtiene un error desde el backend muestra una alerta y redirige al index de Tracks
+  getTrack(id: number): Observable<Track>{
+    return this._httpClient.get<Track>(`${this.url}/${id}`).pipe(
       catchError(e => {
 
         // Catch de error de tipo bad request(400) desde el backend, lo enviará hacia el componente para que lo maneje
@@ -57,7 +60,7 @@ export class ArtistService {
           return throwError(e);
         }
 
-        this._router.navigate(['/artists']);
+        this._router.navigate(['/tracks']);
         $.toast({
          heading: 'Error',
          text: e.error.msg,
@@ -71,10 +74,11 @@ export class ArtistService {
     );
   }
 
-  // Actualiza los datos del artista
+  // Actualiza los datos del Track
   // Se deja el tipo de retorno como any por el wraper del responseEntity de Spring
-  update(artist: Artist): Observable<any>{
-    return this._httpClient.put<any>(`${this.url}/${artist.id}`, artist, { headers: this.httpHeaders }).pipe(
+  update(track: Track): Observable<any>{
+    console.log(track);
+    return this._httpClient.put<any>(`${this.url}/${track.id}`, track, { headers: this.httpHeaders }).pipe(
       catchError(e => {
         $.toast({
          heading: 'Error',
@@ -89,7 +93,7 @@ export class ArtistService {
     );
   }
 
-  // Elimina el artista
+  // Elimina el Track
   delete(id: number): Observable<any>{
     return this._httpClient.delete<any>(`${this.url}/${id}`, { headers: this.httpHeaders }).pipe(
       catchError(e => {
@@ -105,5 +109,4 @@ export class ArtistService {
       })
     );
   }
-
 }

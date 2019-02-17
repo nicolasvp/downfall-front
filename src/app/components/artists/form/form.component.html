@@ -1,6 +1,6 @@
 <div class="row page-titles">
     <div class="col-md-5 align-self-center">
-        <h4 class="text-themecolor">Agregar Artista</h4>
+        <h4 class="text-themecolor">Editar Artista</h4>
     </div>
     <div class="col-md-7 align-self-center text-right">
         <div class="d-flex justify-content-end align-items-center">
@@ -26,7 +26,7 @@
                     <div class="form-group row">
                         <label class="col-md-12" for="name">Nombre</label>
                         <div class="col-md-12">
-                            <input type="text" name="name" class="form-control" [(ngModel)]="artist.name" #name="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <input type="text" name="name" class="form-control" [(ngModel)]="artist.name" required minlength="1" maxlength="100" #name="ngModel"> <!-- required minlength="1" maxlength="100" -->
                             <div class="help-block" *ngIf="name.invalid && (name.dirty || name.touched)">
                               <p *ngIf="name.errors.required">Este campo es obligatorio</p>
                               <p *ngIf="name.errors.minlength">Este campo debe contener al menos 1 caracter</p>
@@ -35,15 +35,15 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-12" for="name">Imagen</label>
+                        <label class="col-md-12" for="image">Imagen</label>
                         <div class="col-md-12">
                             <input type="text" name="image" class="form-control" [(ngModel)]="artist.image">
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-12" for="name">Enlace de Spotify</label>
+                        <label class="col-md-12" for="spotify">Enlace de Spotify</label>
                         <div class="col-md-12">
-                            <input type="text" name="name" class="form-control" [(ngModel)]="artist.spotifyLink" #spotify="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <input type="text" name="spotify" class="form-control" [(ngModel)]="artist.spotifyLink" required #spotify="ngModel"> <!-- required minlength="1" maxlength="100" -->
                             <div class="help-block" *ngIf="spotify.invalid && (spotify.dirty || spotify.touched)">
                               <p *ngIf="spotify.errors.required">Este campo es obligatorio</p>
                               <p *ngIf="spotify.errors.minlength">Este campo debe contener al menos 1 caracter</p>
@@ -52,9 +52,9 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-12" for="name">Enlace de Youtube</label>
+                        <label class="col-md-12" for="youtube">Enlace de Youtube</label>
                         <div class="col-md-12">
-                            <input type="text" name="name" class="form-control" [(ngModel)]="artist.youtubeLink" #youtube="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <input type="text" name="youtube" class="form-control" [(ngModel)]="artist.youtubeLink" required #youtube="ngModel"> <!-- required minlength="1" maxlength="100" -->
                             <div class="help-block" *ngIf="youtube.invalid && (youtube.dirty || youtube.touched)">
                               <p *ngIf="youtube.errors.required">Este campo es obligatorio</p>
                               <p *ngIf="youtube.errors.minlength">Este campo debe contener al menos 1 caracter</p>
@@ -63,10 +63,10 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label class="col-md-12" for="name">Género</label>
+                        <label class="col-md-12" for="genre">Género</label>
                         <div class="col-md-12">
-                          <select class="form-control" name="genre" [(ngModel)]="artist.genre">
-                            <option value="" selected>Seleccione</option>
+                          <select class="form-control" name="genre" [(ngModel)]="artist.genre" required [compareWith]="compareGenre" #genre="ngModel">
+                            <option [ngValue]="undefined">Seleccione</option>
                             <option *ngFor="let genre of genres" [ngValue]="genre">{{ genre.name }}</option>
                           </select>
                         </div>

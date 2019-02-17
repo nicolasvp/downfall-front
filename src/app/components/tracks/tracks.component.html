@@ -1,3 +1,58 @@
-<p>
-  tracks works!
-</p>
+<div class="row page-titles">
+    <div class="col-md-5 align-self-center">
+        <h4 class="text-themecolor">Canciones</h4>
+    </div>
+    <div class="col-md-7 align-self-center text-right">
+        <div class="d-flex justify-content-end align-items-center">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Canciones</a></li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="row el-element-overlay">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Todas las canciones</h5>
+                <div class="row m-t-30" *ngIf="tracks?.length == 0">
+                  <div class="col-lg-12 col-md-12">
+                    <div class="alert alert-info">No existen registros</div>
+                  </div>
+                </div>
+                <div class="table-responsive" *ngIf="tracks?.length > 0">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Album</th>
+                                <th>Artista</th>
+                                <th>Género</th>
+                                <th>Duración</th>
+                                <th class="text-nowrap">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let track of tracks">
+                                <td>{{ track.id }}</td>
+                                <td>{{ track.name }}</td>
+                                <td>{{ track.album.name }}</td>
+                                <td>{{ track.album.artist.name }}</td>
+                                <td>{{ track.album.artist.genre.name }}</td>
+                                <td>{{ track.duration | secondsToMinutes }}</td>
+                                <td class="text-nowrap">
+                                    <a [routerLink]="['/tracks/edit/', track.id]" title="Editar" class="link"> <i class="fa fa-pencil m-r-10"></i> </a>
+                                    <a (click)="delete(track)" title="Eliminar" class="link"> <i class="fa fa-trash"></i> </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <!-- se pasa como atributo parent_paginator desde el padre(tracks) al hijo(child_paginator) -->
+                    <!-- se valida con un if que el paginator halla sido asignado por el componente padre primero -->
+                    <app-paginator *ngIf="parent_paginator" [child_paginator]="parent_paginator"></app-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

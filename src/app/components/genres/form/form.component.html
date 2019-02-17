@@ -26,7 +26,7 @@
                     <div class="form-group row">
                         <label class="col-md-12" for="name">Nombre</label>
                         <div class="col-md-12">
-                            <input type="text" name="name" class="form-control" [(ngModel)]="genre.name" #name="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <input type="text" name="name" class="form-control" [(ngModel)]="genre.name" required minlength="1" maxlength="100" #name="ngModel"> <!-- required minlength="1" maxlength="100" -->
                             <div class="help-block" *ngIf="name.invalid && (name.dirty || name.touched)">
                               <p *ngIf="name.errors.required">Este campo es obligatorio</p>
                               <p *ngIf="name.errors.minlength">Este campo debe contener al menos 1 caracter</p>
@@ -37,13 +37,13 @@
                     <div class="form-group row">
                         <label class="col-md-12" for="name">Imagen</label>
                         <div class="col-md-12">
-                            <input type="text" name="image" class="form-control" [(ngModel)]="genre.image">
+                            <input type="text" name="image" class="form-control" [(ngModel)]="genre.image" #image="ngModel">
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-12" for="description">Descripción</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" name="description" rows="3" [(ngModel)]="genre.description" #description="ngModel"></textarea> <!-- required minlength="1" maxlength="2000" -->
+                            <textarea class="form-control" name="description" rows="3" [(ngModel)]="genre.description" required minlength="1" maxlength="2000" #description="ngModel"></textarea> <!-- required minlength="1" maxlength="2000" -->
                             <div class="help-block" *ngIf="description.invalid && (description.dirty || description.touched)">
                               <p *ngIf="description.errors.required">Este campo es obligatorio</p>
                               <p *ngIf="description.errors.minlength">Este campo debe contener al menos 1 caracter</p>

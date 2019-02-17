@@ -20,16 +20,19 @@ export class ArtistFormComponent implements OnInit {
   constructor(private _artistService: ArtistService, private _genreService: GenreService, private _router: Router, private _activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    // Se consulta por el id en url para saber si se está actualizando o creando un nuevo género
+    // Se consulta por el id en url para saber si se está actualizando o creando un nuevo artista, esto se sabe por la url ya que si va un id entonces está editando
     this.loadArtist();
     this.loadGenres();
   }
 
   // Guarda el nuevo género y luego redirige hacia todos los géneros
   store(): void {
-    // Quita el atributo artists de genero del json de artista, ya que sino causa error en el backend
-    delete this.artist.genre["artists"]
-    console.log(this.artist)
+
+    if(this.artist.genre){
+      // Quita el atributo artists de genero del json de artista, ya que sino causa error en el backend
+      delete this.artist.genre["artists"]
+    }
+console.log(this.artist);
     this._artistService.store(this.artist).subscribe(
       response => {
         this._router.navigate(['/artists'])
@@ -45,7 +48,7 @@ export class ArtistFormComponent implements OnInit {
      },
      err => {
        this.errors = err.error.errors as string[];
-         console.log(this.errors);
+         console.log(err);
      }
     );
   }
@@ -57,7 +60,9 @@ export class ArtistFormComponent implements OnInit {
       let id = params['id'];
       if(id){
         this._artistService.getArtist(id).subscribe(
-          artist => this.artist = artist
+          artist => {
+            this.artist = artist
+          }
         )
       }
     })
@@ -74,6 +79,8 @@ export class ArtistFormComponent implements OnInit {
 
   // Actualiza los datos del género enviando el objeto artist al servicio, luego redirige hacia todos los géneros
   update(): void {
+    // Quita el atributo artists de genero del json de artista, ya que sino causa error en el backend
+    delete this.artist.genre["artists"]
     this._artistService.update(this.artist).subscribe(
       response => {
         this._router.navigate(['/artists'])
@@ -94,4 +101,11 @@ export class ArtistFormComponent implements OnInit {
     )
   }
 
+  // Compara y setea el género del artista con la lista de los generos para dejarlo como seleccionado (selected) al editar
+  compareGenre(input1: Genre, input2: Genre): boolean {
+    if(input1 === undefined && input2 === undefined){
+      return true;
+    }
+    return input1 === null || input2 === null || input1 === undefined || input2 === undefined ? false : input1.id === input2.id;
+  }
 }

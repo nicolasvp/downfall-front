@@ -1,0 +1,116 @@
+import { Component, OnInit } from '@angular/core';
+import { Album } from '../../../interfaces/Album';
+import { Artist } from '../../../interfaces/Artist';
+import { AlbumService } from '../../../services/album.service';
+import { ArtistService } from '../../../services/artist.service';
+import { Router, ActivatedRoute } from '@angular/router';
+declare var $ :any;
+
+@Component({
+  selector: 'app-album-form',
+  templateUrl: './form.component.html'
+})
+
+export class AlbumFormComponent implements OnInit {
+
+  private album: Album = new Album();
+  artists: Artist[] = [];
+  private errors: string[]; // Maneja los errores que son devueltos desde el service
+
+  constructor(private _albumService: AlbumService, private _artistService: ArtistService, private _router: Router, private _activatedRoute: ActivatedRoute) { }
+
+  ngOnInit() {
+    // Se consulta por el id en url para saber si se está actualizando o creando un nuevo Albuma, esto se sabe por la url ya que si va un id entonces está editando
+    this.loadAlbum();
+    this.loadArtists();
+  }
+
+  // Guarda el nuevo género y luego redirige hacia todos los géneros
+  store(): void {
+
+    if(this.album.artist){
+      // Quita el atributo album de artist del json de album, ya que sino causa error en el backend
+      delete this.album.artist["albums"]
+      delete this.album.artist["genre"]
+    }
+
+    this._albumService.store(this.album).subscribe(
+      response => {
+        this._router.navigate(['/albums'])
+        $.toast({
+         heading: 'Éxito',
+         text: `El Género ${response.album.name} se ha creado.`,
+         position: 'top-right',
+         loaderBg:'#ff6849',
+         icon: 'success',
+         hideAfter: 3500,
+         stack: 6
+       });
+     },
+     err => {
+       this.errors = err.error.errors as string[];
+         console.log(err);
+     }
+    );
+  }
+
+  // Carga la información del Album para mostrarla en el formulario
+  // Toma el parametro id de la url para solicitar la información, se consulta sólo si existe el parametro id
+  loadAlbum(): void {
+    this._activatedRoute.params.subscribe(params => {
+      let id = params['id'];
+      if(id){
+        this._albumService.getAlbum(id).subscribe(
+          album => {
+            this.album = album
+          }
+        )
+      }
+    })
+  }
+
+  // Carga la lista de artistas para rellenar el select del formulario
+  loadArtists(): void {
+    this._artistService.getArtists().subscribe(
+      artists => {
+        this.artists = artists
+      }
+    )
+  }
+
+  // Actualiza los datos del album enviando el objeto Album al servicio, luego redirige hacia todos los albums
+  update(): void {
+    if(this.album.artist){
+      // Quita el atributo album de artist del json de album, ya que sino causa error en el backend
+      delete this.album.artist["albums"]
+      delete this.album.artist["genre"]
+    }
+
+    this._albumService.update(this.album).subscribe(
+      response => {
+        this._router.navigate(['/albums'])
+        $.toast({
+         heading: 'Éxito',
+         text: `El Album ${response.album.name} se ha actualizado.`,
+         position: 'top-right',
+         loaderBg:'#ff6849',
+         icon: 'success',
+         hideAfter: 3500,
+         stack: 6
+       });
+      },
+      err => {
+        this.errors = err.error.errors as string[];
+        console.log(this.errors);
+      }
+    )
+  }
+
+  // Compara y setea el artista del Album con la lista de los artistas para dejarlo como seleccionado (selected) al editar
+  compareGenre(input1: Artist, input2: Artist): boolean {
+    if(input1 === undefined && input2 === undefined){
+      return true
+    }
+    return input1 === null || input2 === null || input1 === undefined || input2 === undefined ? false : input1.id === input2.id;
+  }
+}

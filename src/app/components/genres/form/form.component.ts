@@ -17,7 +17,7 @@ export class GenreFormComponent implements OnInit {
   constructor(private _genreService: GenreService, private _router: Router, private _activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    // Se consulta por el id en url para saber si se está actualizando o creando un nuevo género
+    // Se consulta por el id en url para saber si se está actualizando o creando un nuevo género, esto se sabe por medio de la ruta donde si va un id entonces está editando
     this.loadGenre();
   }
 
