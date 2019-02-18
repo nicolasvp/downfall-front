@@ -18,8 +18,8 @@ export class AlbumService {
 
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
-  // Obtiene todos los Albumas
-  getAlbums(): Observable<Album[]>{
+  // Obtiene todos los Albums, recibe un parametro booleano que indica si se debe formatear la fecha del album o no
+  getAlbums(mustConvert: boolean): Observable<Album[]>{
     // Se iteran los albums y se cambia el formato de la fecha (releaseDate)
     return this._httpClient.get(this.url).pipe(
       map(response => {
@@ -30,9 +30,11 @@ export class AlbumService {
           // Esta es una forma de hacer el pipe
           // album.releaseDate = formatDate(album.releaseDate, 'dd-MM-yyyy', 'en-US')
 
-          // Formatea la fecha utilizando DatePipe
-          let datePipe = new DatePipe('en-US');
-          album.releaseDate = datePipe.transform(album.releaseDate, 'dd-MM-yyyy');
+          if(mustConvert){
+            // Formatea la fecha utilizando DatePipe
+            let datePipe = new DatePipe('en-US');
+            album.releaseDate = datePipe.transform(album.releaseDate, 'dd-MM-yyyy');
+          }
           return album;
         })
       })
@@ -66,6 +68,15 @@ export class AlbumService {
   // Obtener los datos para actualizar Album, si obtiene un error desde el backend muestra una alerta y redirige al index de Albums
   getAlbum(id: number): Observable<Album>{
     return this._httpClient.get<Album>(`${this.url}/${id}`).pipe(
+      map(
+        album => {
+            // Formatea la fecha utilizando DatePipe
+            let datePipe = new DatePipe('en-US');
+            // Se deja en formato yyyy-MM-dd para que el input date del form pueda setearlo y mostrarlo con formato dd-MM-yyyy(por el locale del browser)
+            album.releaseDate = datePipe.transform(album.releaseDate, 'yyyy-MM-dd');
+            return album;
+        }
+      ),
       catchError(e => {
 
         // Catch de error de tipo bad request(400) desde el backend, lo enviará hacia el componente para que lo maneje
@@ -108,6 +119,28 @@ export class AlbumService {
   // Elimina el Albuma
   delete(id: number): Observable<any>{
     return this._httpClient.delete<any>(`${this.url}/${id}`, { headers: this.httpHeaders }).pipe(
+      catchError(e => {
+        $.toast({
+         heading: 'Error',
+         text: e.error.msg,
+         position: 'top-right',
+         loaderBg:'#ff6849',
+         icon: 'error',
+         hideAfter: 3500
+        });
+        return throwError(e);
+      })
+    );
+  }
+
+  // Sube la imagen
+  uploadFile(file: File, id): Observable<Album>{
+    let formData = new FormData();
+    formData.append("file", file);
+    formData.append("id", id);
+
+    return this._httpClient.post(`${this.url}/upload/`, formData).pipe(
+      map( (response: any) => response.album as Album),
       catchError(e => {
         $.toast({
          heading: 'Error',

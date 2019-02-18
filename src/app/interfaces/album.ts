@@ -4,6 +4,6 @@ export class Album {
   id: number;
   name: string;
   releaseDate: string;
-  image: string;
+  image: File;
   artist: Artist
 }

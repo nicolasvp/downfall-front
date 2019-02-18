@@ -16,10 +16,9 @@ export class AlbumsComponent implements OnInit {
 
   ngOnInit() {
     // Obtiene todos los artistas para listarlos
-    this._albumService.getAlbums().subscribe(
+    this._albumService.getAlbums(true).subscribe(
       albums => {
         this.albums = albums
-        console.log(this.albums);
       }
     );
   }

@@ -26,29 +26,42 @@
                     <div class="form-group row">
                         <label class="col-md-12" for="name">Nombre</label>
                         <div class="col-md-12">
-                            <input type="text" name="name" class="form-control" [(ngModel)]="album.name" required minlength="1" maxlength="100" #name="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <input type="text" name="name" class="form-control" [(ngModel)]="album.name" #name="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <!-- Mensajes de validaciones utilizando solo angular
                             <div class="help-block" *ngIf="name.invalid && (name.dirty || name.touched)">
                               <p *ngIf="name.errors.required">Este campo es obligatorio</p>
                               <p *ngIf="name.errors.minlength">Este campo debe contener al menos 1 caracter</p>
                               <p *ngIf="name.errors.maxlength">Este campo no debe superar los 100 caracteres</p>
                             </div>
+                            -->
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-12" for="image">Imagen</label>
                         <div class="col-md-12">
-                            <input type="text" name="image" class="form-control" [(ngModel)]="album.image" #image="ngModel">
+                          <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                            <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                              <span class="fileinput-filename"></span>
+                            </div> <span class="input-group-addon btn btn-default btn-file">
+                              <span class="fileinput-new">Seleccionar</span>
+                              <span class="fileinput-exists">Cambiar</span>
+                            <input type="hidden">
+                            <input (change)="selectFile($event)" type="file" name="image" [(ngModel)]="album.image" #image="ngModel">
+                            </span> <a href="javascript:void(0)" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                          </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="col-md-12" for="release">Fecha de lanzamiento</label>
                         <div class="col-md-12">
-                            <input type="text" name="release" class="form-control" [(ngModel)]="album.releaseDate" required #release="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <input type="date" name="release" class="form-control" [(ngModel)]="album.releaseDate" #release="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <!-- Mensajes de validaciones utilizando solo angular
                             <div class="help-block" *ngIf="release.invalid && (release.dirty || release.touched)">
                               <p *ngIf="release.errors.required">Este campo es obligatorio</p>
                               <p *ngIf="release.errors.minlength">Este campo debe contener al menos 1 caracter</p>
                               <p *ngIf="release.errors.maxlength">Este campo no debe superar los 200 caracteres</p>
                             </div>
+                            -->
                         </div>
                     </div>
                     <div class="form-group row">
@@ -60,9 +73,9 @@
                           </select>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success waves-effect waves-light m-r-10" (click)="store()" *ngIf="!album.id else updateButton" [disabled]="!albumForm.form.valid">Agregar</button>
+                    <button type="submit" class="btn btn-success waves-effect waves-light m-r-10" (click)="store()" *ngIf="!album.id else updateButton">Agregar</button> <!-- [disabled]="!albumForm.form.valid" -->
                     <ng-template #updateButton>
-                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10" (click)="update()" [disabled]="!albumForm.form.valid">Actualizar</button>
+                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10" (click)="update()">Actualizar</button> <!-- [disabled]="!albumForm.form.valid" -->
                     </ng-template>
                 </form>
             </div>

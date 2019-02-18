@@ -4,6 +4,7 @@ import { catchError, map } from 'rxjs/operators';
 import { Track } from '../interfaces/Track';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 declare var $ :any;
 
 @Injectable({
@@ -29,6 +30,11 @@ export class TrackService {
   // Guarda el nuevo track
   // Se deja el tipo de retorno como any por el wraper del responseEntity de Spring
   store(track: Track): Observable<any>{
+
+    // Se aplica pipe para volver a formatear la fecha del album a yyyy-MM-dd
+    let datePipe = new DatePipe('en-US');
+    track.album.releaseDate = datePipe.transform(track.album.releaseDate, 'yyyy-MM-dd');
+
     return this._httpClient.post<any>(this.url, track, { headers: this.httpHeaders }).pipe(
       catchError(e => {
 
@@ -77,7 +83,11 @@ export class TrackService {
   // Actualiza los datos del Track
   // Se deja el tipo de retorno como any por el wraper del responseEntity de Spring
   update(track: Track): Observable<any>{
-    console.log(track);
+
+    // Se aplica pipe para volver a formatear la fecha del album a yyyy-MM-dd
+    let datePipe = new DatePipe('en-US');
+    track.album.releaseDate = datePipe.transform(track.album.releaseDate, 'yyyy-MM-dd');
+
     return this._httpClient.put<any>(`${this.url}/${track.id}`, track, { headers: this.httpHeaders }).pipe(
       catchError(e => {
         $.toast({

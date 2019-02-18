@@ -26,12 +26,14 @@
                     <div class="form-group row">
                         <label class="col-md-12" for="name">Nombre</label>
                         <div class="col-md-12">
-                            <input type="text" name="name" class="form-control" [(ngModel)]="genre.name" required minlength="1" maxlength="100" #name="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <input type="text" name="name" class="form-control" [(ngModel)]="genre.name" #name="ngModel"> <!-- required minlength="1" maxlength="100" -->
+                            <!-- Mensajes de validaciones utilizando solo angular
                             <div class="help-block" *ngIf="name.invalid && (name.dirty || name.touched)">
                               <p *ngIf="name.errors.required">Este campo es obligatorio</p>
                               <p *ngIf="name.errors.minlength">Este campo debe contener al menos 1 caracter</p>
                               <p *ngIf="name.errors.maxlength">Este campo no debe superar los 100 caracteres</p>
                             </div>
+                            -->
                         </div>
                     </div>
                     <div class="form-group row">
@@ -43,17 +45,19 @@
                     <div class="form-group row">
                         <label class="col-md-12" for="description">Descripción</label>
                         <div class="col-md-12">
-                            <textarea class="form-control" name="description" rows="3" [(ngModel)]="genre.description" required minlength="1" maxlength="2000" #description="ngModel"></textarea> <!-- required minlength="1" maxlength="2000" -->
+                            <textarea class="form-control" name="description" rows="3" [(ngModel)]="genre.description" #description="ngModel"></textarea> <!-- required minlength="1" maxlength="2000" -->
+                            <!-- Mensajes de validaciones utilizando solo angular
                             <div class="help-block" *ngIf="description.invalid && (description.dirty || description.touched)">
                               <p *ngIf="description.errors.required">Este campo es obligatorio</p>
                               <p *ngIf="description.errors.minlength">Este campo debe contener al menos 1 caracter</p>
                               <p *ngIf="description.errors.maxlength">Este campo no debe superar los 2000 caracteres</p>
                             </div>
+                            -->
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-success waves-effect waves-light m-r-10" (click)="store()" *ngIf="!genre.id else updateButton" [disabled]="!genreForm.form.valid">Agregar</button>
+                    <button type="submit" class="btn btn-success waves-effect waves-light m-r-10" (click)="store()" *ngIf="!genre.id else updateButton">Agregar</button> <!-- [disabled]="!genreForm.form.valid" -->
                     <ng-template #updateButton>
-                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10" (click)="update()" [disabled]="!genreForm.form.valid">Actualizar</button>
+                      <button type="submit" class="btn btn-info waves-effect waves-light m-r-10" (click)="update()">Actualizar</button> <!-- [disabled]="!genreForm.form.valid" -->
                     </ng-template>
                 </form>
             </div>

@@ -38,7 +38,7 @@ console.log(this.artist);
         this._router.navigate(['/artists'])
         $.toast({
          heading: 'Éxito',
-         text: `El Género ${response.artist.name} se ha creado.`,
+         text: `El Artista ${response.artist.name} se ha creado.`,
          position: 'top-right',
          loaderBg:'#ff6849',
          icon: 'success',

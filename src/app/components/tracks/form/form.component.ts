@@ -4,6 +4,7 @@ import { Album } from '../../../interfaces/Album';
 import { AlbumService } from '../../../services/album.service';
 import { TrackService } from '../../../services/track.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 declare var $ :any;
 
 @Component({
@@ -67,9 +68,9 @@ export class TrackFormComponent implements OnInit {
     })
   }
 
-  // Carga la lista de albums para rellenar el select del formulario
+  // Carga la lista de albums para rellenar el select del formulario, envia el parametro false para indicar que no se debe formatear la fecha de los albums
   loadAlbums(): void {
-    this._albumService.getAlbums().subscribe(
+    this._albumService.getAlbums(false).subscribe(
       albums => {
         this.albums = albums
       }
@@ -78,6 +79,7 @@ export class TrackFormComponent implements OnInit {
 
   // Actualiza los datos del track enviando el objeto Track al servicio, luego redirige hacia todos los tracks
   update(): void {
+
     if(this.track.album){
       // Quita el atributo artist de album del json de track, ya que sino causa error en el backend
        delete this.track.album.artist
