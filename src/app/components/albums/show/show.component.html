@@ -1,0 +1,55 @@
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display: none;" id="show_modal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Detalle: {{ album_child.name }}</h4>
+                <button type="button" (click)="closeModal()" class="close"  aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+              <div class="card">
+                <div class="card">
+                    <div class="row">
+                      <div class="col-5">
+                        <div class="user-bg">
+                          <img *ngIf="album_child.image" src="http://localhost:8080/api/uploads/img/{{ album_child.image }}" alt="{{ album_child.name }}">
+                          <img *ngIf="!album_child?.image" src="assets/dist/images/alb8.jpg" alt="user" />
+                        </div>
+                      </div>
+                      <div class="col-7">
+                        <div class="card-body">
+                            <div class="row text-center m-t-10">
+                                <div class="col-md-12 border-bottom m-b-20 p-b-20">
+                                    <h5 class="card-title">{{ album_child.name }}</h5>
+                                    <h6>{{ album_child.artist.name }}</h6>
+                                </div>
+                                <div class="col-md-6 border-right">
+                                    <strong>Fecha lanzamiento</strong>
+                                    <p>{{ album_child.releaseDate }}</p>
+                                </div>
+                                <div class="col-md-6"><strong>Género</strong>
+                                    <p>{{ album_child.artist.genre.name }}</p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row text-center m-t-10">
+                                <div class="col-md-6 border-right"><strong>Pistas</strong>
+                                    <p>{{ album_child.tracks.length }}</p>
+                                </div>
+                                <div class="col-md-6"><strong>Run Time</strong>
+                                    <p>40:35 Min</p>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+                <button (click)="closeModal()" type="button" class="btn btn-danger waves-effect text-left">Cerrar</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

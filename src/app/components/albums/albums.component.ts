@@ -11,11 +11,12 @@ declare var $ :any;
 export class AlbumsComponent implements OnInit {
 
   albums: Album[] = [];
+  album_parent: Album;
 
   constructor(private _albumService: AlbumService) {  }
 
   ngOnInit() {
-    // Obtiene todos los artistas para listarlos
+    // Obtiene todos los albums para listarlos
     this._albumService.getAlbums(true).subscribe(
       albums => {
         this.albums = albums
@@ -47,6 +48,13 @@ export class AlbumsComponent implements OnInit {
         }
       )
     }
+  }
+
+  // Abre el modal donde se muestra el detalle del album
+  // Utiliza el metodo openModal del servicio de Modal
+  show(album: Album): void{
+    this.album_parent = album;
+    $("#show_modal").modal('show');
   }
 
 }
