@@ -123,7 +123,7 @@ export class AlbumFormComponent implements OnInit {
 
   // Guarda la imagen seleccionada en la variable fileSelected del tipo File
   // Nota: No se puede asignar el archivo al album.image por que solo acepta strings
-  selectFile(event): void{
+  selectFile(event: any): void{
     this.fileSelected = event.target.files[0];
 
     // Validación para que el archivo sea una imagen, se lee el type a traves del indexOf que debe ser del tipo image

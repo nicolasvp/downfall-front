@@ -13,6 +13,7 @@ export class GenreFormComponent implements OnInit {
 
   private genre: Genre = new Genre();
   private errors: string[]; // Maneja los errores que son devueltos desde el service
+  private fileSelected: File;
 
   constructor(private _genreService: GenreService, private _router: Router, private _activatedRoute: ActivatedRoute) { }
 
@@ -25,16 +26,27 @@ export class GenreFormComponent implements OnInit {
   store(): void {
     this._genreService.store(this.genre).subscribe(
       response => {
-        this._router.navigate(['/genres'])
-        $.toast({
-         heading: 'Éxito',
-         text: `El Género ${response.genre.name} se ha creado.`,
-         position: 'top-right',
-         loaderBg:'#ff6849',
-         icon: 'success',
-         hideAfter: 3500,
-         stack: 6
-       });
+        // Luego de guardar el album guarda la imagen y finalmente retorna al index de albums
+        let storedGenre = response.genre;
+        // Guarda la imagen
+        this._genreService.uploadFile(this.fileSelected, storedGenre.id).subscribe(
+          response => {
+            this._router.navigate(['/genres'])
+            $.toast({
+               heading: 'Éxito',
+               text: `El Album ${storedGenre.name} se ha creado.`,
+               position: 'top-right',
+               loaderBg:'#ff6849',
+               icon: 'success',
+               hideAfter: 3500,
+               stack: 6
+            });
+          },
+          err => {
+           this.errors = err.error.errors as string[];
+             console.log(err);
+          }
+        );
      },
      err => {
        this.errors = err.error.errors as string[];
@@ -78,4 +90,18 @@ export class GenreFormComponent implements OnInit {
     )
   }
 
+  // Guarda la imagen seleccionada en la variable fileSelected del tipo File
+  // Nota: No se puede asignar el archivo al genre.image por que solo acepta strings
+  selectFile(event: any): void{
+    this.fileSelected = event.target.files[0];
+
+    // Validación para que el archivo sea una imagen, se lee el type a traves del indexOf que debe ser del tipo image
+    if(this.fileSelected.type.indexOf('image') < 0){
+      this.errors = ["El archivo debe ser una imagen."];
+      this.fileSelected = null;
+      this.genre.image = null;
+    }else{
+      this.errors = [];
+    }
+  }
 }

@@ -16,6 +16,7 @@ export class ArtistFormComponent implements OnInit {
   private artist: Artist = new Artist();
   genres: Genre[] = [];
   private errors: string[]; // Maneja los errores que son devueltos desde el service
+  private fileSelected: File;
 
   constructor(private _artistService: ArtistService, private _genreService: GenreService, private _router: Router, private _activatedRoute: ActivatedRoute) { }
 
@@ -32,19 +33,30 @@ export class ArtistFormComponent implements OnInit {
       // Quita el atributo artists de genero del json de artista, ya que sino causa error en el backend
       delete this.artist.genre["artists"]
     }
-console.log(this.artist);
+
     this._artistService.store(this.artist).subscribe(
       response => {
-        this._router.navigate(['/artists'])
-        $.toast({
-         heading: 'Éxito',
-         text: `El Artista ${response.artist.name} se ha creado.`,
-         position: 'top-right',
-         loaderBg:'#ff6849',
-         icon: 'success',
-         hideAfter: 3500,
-         stack: 6
-       });
+        // Luego de guardar el album guarda la imagen y finalmente retorna al index de albums
+        let storedArtist = response.artist;
+        // Guarda la imagen
+        this._artistService.uploadFile(this.fileSelected, storedArtist.id).subscribe(
+          response => {
+            this._router.navigate(['/artists'])
+            $.toast({
+             heading: 'Éxito',
+             text: `El Artista ${storedArtist.name} se ha creado.`,
+             position: 'top-right',
+             loaderBg:'#ff6849',
+             icon: 'success',
+             hideAfter: 3500,
+             stack: 6
+           });
+          },
+          err => {
+           this.errors = err.error.errors as string[];
+             console.log(err);
+          }
+        );
      },
      err => {
        this.errors = err.error.errors as string[];
@@ -99,6 +111,21 @@ console.log(this.artist);
         console.log(this.errors);
       }
     )
+  }
+
+  // Guarda la imagen seleccionada en la variable fileSelected del tipo File
+  // Nota: No se puede asignar el archivo al album.image por que solo acepta strings
+  selectFile(event: any): void{
+    this.fileSelected = event.target.files[0];
+
+    // Validación para que el archivo sea una imagen, se lee el type a traves del indexOf que debe ser del tipo image
+    if(this.fileSelected.type.indexOf('image') < 0){
+      this.errors = ["El archivo debe ser una imagen."];
+      this.fileSelected = null;
+      this.artist.image = null;
+    }else{
+      this.errors = [];
+    }
   }
 
   // Compara y setea el género del artista con la lista de los generos para dejarlo como seleccionado (selected) al editar

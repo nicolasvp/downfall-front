@@ -25,8 +25,8 @@
                         <div class="col-lg-2 col-md-3" *ngFor="let album of albums">
                             <div class="el-card-item">
                                 <div class="el-card-avatar el-overlay-1">
-                                  <img *ngIf="album?.image" src="http://localhost:8080/api/uploads/img/{{ album.image }}" alt="{{ album.image }}">
-                                  <img *ngIf="!album?.image" src="assets/dist/images/alb8.jpg" alt="user" />
+                                  <img *ngIf="album?.image" src="http://localhost:8080/api/uploads/albums/img/{{ album.image }}" alt="{{ album.image }}">
+                                  <img *ngIf="!album?.image" src="assets/dist/images/alb8.jpg" alt="album" />
                                     <div class="el-overlay">
                                         <ul class="el-info">
                                             <li><a class="img-circle font-20" href="#"><i class="ti-control-play"></i></a></li>

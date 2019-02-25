@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from "rxjs";
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { Genre } from '../interfaces/Genre';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -86,7 +86,7 @@ export class GenreService {
         });
         return throwError(e);
       })
-    );;
+    );
   }
 
   // Elimina el géneros
@@ -103,6 +103,28 @@ export class GenreService {
         });
         return throwError(e);
       })
-    );;
+    );
+  }
+
+  // Sube la imagen
+  uploadFile(file: File, id): Observable<Genre>{
+    let formData = new FormData();
+    formData.append("file", file);
+    formData.append("id", id);
+
+    return this._httpClient.post(`${this.url}/upload/`, formData).pipe(
+      map( (response: any) => response.genre as Genre),
+      catchError(e => {
+        $.toast({
+         heading: 'Error',
+         text: e.error.msg,
+         position: 'top-right',
+         loaderBg:'#ff6849',
+         icon: 'error',
+         hideAfter: 3500
+        });
+        return throwError(e);
+      })
+    );
   }
 }
