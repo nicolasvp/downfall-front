@@ -5,6 +5,7 @@ import { Track } from '../interfaces/Track';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { AuthService } from './auth.service';
 declare var $ :any;
 
 @Injectable({
@@ -12,15 +13,28 @@ declare var $ :any;
 })
 export class TrackService {
 
-  constructor(private _httpClient: HttpClient, private _router: Router) { }
+  constructor(private _httpClient: HttpClient, private _router: Router, private _authService: AuthService) { }
 
   private url: string = 'http://localhost:8080/api/tracks';
 
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
+  // Agrega token a la cabecera
+  private addAuthorizationToHeaders(){
+    // Obtiene token mediante el getter
+    let token = this._authService.token;
+
+    // Si el token no es nulo lo agrega a las cabeceras
+    if(token != null){
+      return this.httpHeaders.append('Authorization', 'Bearer ' + token);
+    }
+
+    return this.httpHeaders;
+  }
+
   // Obtiene todos los tracks por página
   getTracks(page: number): Observable<any>{
-    return this._httpClient.get(this.url + '/page/' + page).pipe(
+    return this._httpClient.get(this.url + '/page/' + page, { headers: this.addAuthorizationToHeaders() }).pipe(
       map( (response: any) => {
         return response;
       })
@@ -35,7 +49,7 @@ export class TrackService {
     let datePipe = new DatePipe('en-US');
     track.album.releaseDate = datePipe.transform(track.album.releaseDate, 'yyyy-MM-dd');
 
-    return this._httpClient.post<any>(this.url, track, { headers: this.httpHeaders }).pipe(
+    return this._httpClient.post<any>(this.url, track, { headers: this.addAuthorizationToHeaders() }).pipe(
       catchError(e => {
 
         // Catch de error de tipo bad request(400) desde el backend, lo enviará hacia el componente para que lo maneje
@@ -58,7 +72,7 @@ export class TrackService {
 
   // Obtener los datos para actualizar el track, si obtiene un error desde el backend muestra una alerta y redirige al index de Tracks
   getTrack(id: number): Observable<Track>{
-    return this._httpClient.get<Track>(`${this.url}/${id}`).pipe(
+    return this._httpClient.get<Track>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
       catchError(e => {
 
         // Catch de error de tipo bad request(400) desde el backend, lo enviará hacia el componente para que lo maneje
@@ -88,7 +102,7 @@ export class TrackService {
     let datePipe = new DatePipe('en-US');
     track.album.releaseDate = datePipe.transform(track.album.releaseDate, 'yyyy-MM-dd');
 
-    return this._httpClient.put<any>(`${this.url}/${track.id}`, track, { headers: this.httpHeaders }).pipe(
+    return this._httpClient.put<any>(`${this.url}/${track.id}`, track, { headers: this.addAuthorizationToHeaders() }).pipe(
       catchError(e => {
         $.toast({
          heading: 'Error',
@@ -105,7 +119,7 @@ export class TrackService {
 
   // Elimina el Track
   delete(id: number): Observable<any>{
-    return this._httpClient.delete<any>(`${this.url}/${id}`, { headers: this.httpHeaders }).pipe(
+    return this._httpClient.delete<any>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
       catchError(e => {
         $.toast({
          heading: 'Error',

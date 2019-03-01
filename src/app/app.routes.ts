@@ -8,6 +8,7 @@ import { AlbumFormComponent } from './components/albums/form/form.component';
 import { TracksComponent } from './components/tracks/tracks.component';
 import { TrackFormComponent } from './components/tracks/form/form.component';
 import { HomeComponent } from './components/home/home.component';
+import { LoginComponent } from './components/login/login.component';
 
 const app_routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -24,6 +25,7 @@ const app_routes: Routes = [
   { path: 'tracks/page/:page_number', component: TracksComponent },
   { path: 'tracks/add', component: TrackFormComponent },
   { path: 'tracks/edit/:id', component: TrackFormComponent },
+  { path: 'login', component: LoginComponent },
   { path: '**', pathMatch: 'full', redirectTo: '/home' }
 ];
 

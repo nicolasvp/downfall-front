@@ -6,16 +6,16 @@
             <div class="user-pro-body">
                 <div><img src="assets/assets/images/users/2.jpg" alt="user-img" class="img-circle"></div>
                 <div class="dropdown">
-                    <a href="javascript:void(0)" class="dropdown-toggle u-dropdown link hide-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrador <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle u-dropdown link hide-menu" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ _user.name }} <span class="caret"></span></a>
                     <div class="dropdown-menu animated flipInY">
                         <!-- text-->
-                        <a href="javascript:void(0)" class="dropdown-item"><i class="ti-user"></i> Mi Perfil</a>
+                        <a href="#" class="dropdown-item"><i class="ti-user"></i> Mi Perfil</a>
                         <!-- text-->
-                        <a href="javascript:void(0)" class="dropdown-item"><i class="ti-settings"></i> Configuración</a>
+                        <a href="#" class="dropdown-item"><i class="ti-settings"></i> Configuración</a>
                         <!-- text-->
                         <div class="dropdown-divider"></div>
                         <!-- text-->
-                        <a href="#" class="dropdown-item"><i class="fa fa-power-off"></i> Cerrar sesión</a>
+                        <a (click)="logout()" class="dropdown-item"><i class="fa fa-power-off"></i> Cerrar sesión</a>
                         <!-- text-->
                     </div>
                 </div>
@@ -25,25 +25,25 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
                 <li> <a class="waves-effect waves-dark" [routerLink]="['/home']" aria-expanded="false"><i class="icon-speedometer"></i>Dashboard</a>
-                <li><a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-music"></i><span class="hide-menu">Géneros</span></a>
+                <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="ti-music"></i><span class="hide-menu">Géneros</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li> <a [routerLink]="['/genres']" routerLinkActive="active">Todos los géneros</a> </li>
                         <li> <a [routerLink]="['/genres/add']" routerLinkActive="active">Agregar género</a> </li>
                     </ul>
                 </li>
-                <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-user"></i><span class="hide-menu">Artistas</span></a>
+                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="ti-user"></i><span class="hide-menu">Artistas</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li> <a [routerLink]="['/artists']" routerLinkActive="active">Todos los artistas</a> </li>
                         <li> <a [routerLink]="['/artists/add']" routerLinkActive="active">Agregar artista</a> </li>
                     </ul>
                 </li>
-                <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-microphone"></i><span class="hide-menu">Álbumes</span></a>
+                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="ti-microphone"></i><span class="hide-menu">Álbumes</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li> <a [routerLink]="['/albums']" routerLinkActive="active">Todos los albumes</a> </li>
                         <li> <a [routerLink]="['/albums/add']" routerLinkActive="active">Agregar album</a> </li>
                     </ul>
                 </li>
-                <li> <a class="has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="ti-music-alt"></i><span class="hide-menu">Canciones</span></a>
+                <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="ti-music-alt"></i><span class="hide-menu">Canciones</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li> <a [routerLink]="['/tracks']" routerLinkActive="active">Todas las canciones</a> </li>
                         <li> <a [routerLink]="['/tracks/add']" routerLinkActive="active">Agregar canción</a> </li>

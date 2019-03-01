@@ -21,6 +21,7 @@ import { AlbumFormComponent } from './components/albums/form/form.component';
 import { TrackFormComponent } from './components/tracks/form/form.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { ShowComponent } from './components/albums/show/show.component';
+import { LoginComponent } from './components/login/login.component';
 
 // Pipes
 import { SecondsToMinutes } from './pipes/secondsToMinutes';
@@ -33,7 +34,6 @@ import { GenreService } from './services/genre.service';
 import { ArtistService } from './services/artist.service';
 import { AlbumService } from './services/album.service';
 import { TrackService } from './services/track.service';
-
 
 @NgModule({
   declarations: [
@@ -53,6 +53,7 @@ import { TrackService } from './services/track.service';
     SecondsToMinutes,
     PaginatorComponent,
     ShowComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,22 +1,13 @@
-<!-- ============================================================== -->
-<!-- Preloader - style you can find in spinners.css -->
-<!-- ============================================================== -->
-<div class="preloader">
-    <div class="loader">
-        <div class="loader__figure"></div>
-        <p class="loader__label">DownFall</p>
-    </div>
-</div>
-<!-- ============================================================== -->
-<!-- Main wrapper - style you can find in pages.scss -->
-<!-- ============================================================== -->
-<div id="main-wrapper">
+<div id="main-wrapper" *ngIf="loggedIn">
   <app-header></app-header>
-  <app-sidebar></app-sidebar>
+  <app-sidebar (loginStatus)='loginStatus($event)'></app-sidebar>
   <div class="page-wrapper">
       <div class="container-fluid">
         <router-outlet></router-outlet>
       </div>
   </div>
   <app-footer></app-footer>
+</div>
+<div *ngIf="!loggedIn">
+  <app-login (loginStatus)='loginStatus($event)'></app-login>
 </div>
