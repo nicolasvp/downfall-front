@@ -111,4 +111,13 @@ export class AuthService {
 
     return false;
   }
+
+  // Verifica si contiene el rol indicado
+  hasRole(role: string): boolean{
+    if(this._user.roles.includes(role)){
+        return true;
+    }
+
+    return false;
+  }
 }

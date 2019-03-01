@@ -36,8 +36,8 @@
                                 <div class="el-card-content text-left">
                                     <h5 class="card-title m-b-0">
                                       {{ album.name }}
-                                      <a (click)="delete(album)"><i class="ti-trash pull-right" title="Eliminar"></i></a>
-                                      <a [routerLink]="['/albums/edit', album.id]"><i class="ti-pencil pull-right" title="Editar"></i></a>
+                                      <a *ngIf="_authService.hasRole('ROLE_ADMIN')" (click)="delete(album)"><i class="ti-trash pull-right" title="Eliminar"></i></a>
+                                      <a *ngIf="_authService.hasRole('ROLE_ADMIN')" [routerLink]="['/albums/edit', album.id]"><i class="ti-pencil pull-right" title="Editar"></i></a>
                                       <a (click)="show(album)"><i class="ti-eye pull-right" title="Ver detalle"></i></a>
                                     </h5>
                                     <small>{{ album.releaseDate }}</small>

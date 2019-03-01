@@ -66,12 +66,18 @@ export class GenreService {
     return this._httpClient.get<Genre>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
       catchError(e => {
 
+        if(e.status == 401 || e.status == 403){
+          this.isNotAuthorized(e);
+          return throwError(e);
+        }
+
         // Catch de error de tipo bad request(400) desde el backend, lo enviará hacia el componente para que lo maneje
         if(e.status == 400){
           return throwError(e);
         }
 
         this._router.navigate(['/genres']);
+
         $.toast({
          heading: 'Error',
          text: e.error.msg,
@@ -80,6 +86,7 @@ export class GenreService {
          icon: 'error',
          hideAfter: 3500
         });
+
         return throwError(e);
       })
     );
@@ -90,6 +97,12 @@ export class GenreService {
   update(genre: Genre): Observable<any>{
     return this._httpClient.put<any>(`${this.url}/${genre.id}`, genre, { headers: this.addAuthorizationToHeaders() }).pipe(
       catchError(e => {
+
+        if(e.status == 401 || e.status == 403){
+          this.isNotAuthorized(e);
+          return throwError(e);
+        }
+
         $.toast({
          heading: 'Error',
          text: e.error.msg,
@@ -98,6 +111,7 @@ export class GenreService {
          icon: 'error',
          hideAfter: 3500
         });
+
         return throwError(e);
       })
     );
@@ -107,6 +121,12 @@ export class GenreService {
   delete(id: number): Observable<any>{
     return this._httpClient.delete<any>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
       catchError(e => {
+
+        if(e.status == 401 || e.status == 403){
+          this.isNotAuthorized(e);
+          return throwError(e);
+        }
+
         $.toast({
          heading: 'Error',
          text: e.error.msg,
@@ -140,5 +160,38 @@ export class GenreService {
         return throwError(e);
       })
     );
+  }
+
+  // Revisa si el error es 401 o 403 y lanza una alerta
+  isNotAuthorized(e): boolean{
+
+    // No autenticado
+    if(e.status == 401){
+
+      // Si el token expiró entonces cierra la sesión
+      if(this._authService.isAuthenticated()){
+        this._authService.logout();
+      }
+
+      this._router.navigate(['/login']);
+      return true;
+    }
+
+    // Permisos denegados
+    if(e.status == 403){
+      this._router.navigate(['/genres']);
+      $.toast({
+       heading: 'Permiso denegado',
+       text: 'No tiene permiso para acceder a esta sección.',
+       position: 'top-right',
+       loaderBg:'#ff6849',
+       icon: 'warning',
+       hideAfter: 3500,
+       stack: 6
+     });
+      return true;
+    }
+
+    return false;
   }
 }

@@ -61,6 +61,11 @@ export class AlbumService {
     return this._httpClient.post<any>(this.url, album, { headers: this.addAuthorizationToHeaders() }).pipe(
       catchError(e => {
 
+        if(e.status == 401 || e.status == 403){
+          this.isNotAuthorized(e);
+          return throwError(e);
+        }
+
         // Catch de error de tipo bad request(400) desde el backend, lo enviará hacia el componente para que lo maneje
         if(e.status == 400){
           return throwError(e);
@@ -93,6 +98,11 @@ export class AlbumService {
       ),
       catchError(e => {
 
+        if(e.status == 401 || e.status == 403){
+          this.isNotAuthorized(e);
+          return throwError(e);
+        }
+
         // Catch de error de tipo bad request(400) desde el backend, lo enviará hacia el componente para que lo maneje
         if(e.status == 400){
           return throwError(e);
@@ -117,6 +127,12 @@ export class AlbumService {
   update(album: Album): Observable<any>{
     return this._httpClient.put<any>(`${this.url}/${album.id}`, album, { headers: this.addAuthorizationToHeaders() }).pipe(
       catchError(e => {
+
+        if(e.status == 401 || e.status == 403){
+          this.isNotAuthorized(e);
+          return throwError(e);
+        }
+
         $.toast({
          heading: 'Error',
          text: e.error.msg,
@@ -134,6 +150,12 @@ export class AlbumService {
   delete(id: number): Observable<any>{
     return this._httpClient.delete<any>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
       catchError(e => {
+
+        if(e.status == 401 || e.status == 403){
+          this.isNotAuthorized(e);
+          return throwError(e);
+        }
+
         $.toast({
          heading: 'Error',
          text: e.error.msg,
@@ -156,6 +178,12 @@ export class AlbumService {
     return this._httpClient.post(`${this.url}/upload/`, formData, { headers: this.addAuthorizationToHeaders() }).pipe(
       map( (response: any) => response.album as Album),
       catchError(e => {
+
+        if(e.status == 401 || e.status == 403){
+          this.isNotAuthorized(e);
+          return throwError(e);
+        }
+
         $.toast({
          heading: 'Error',
          text: e.error.msg,
@@ -167,5 +195,38 @@ export class AlbumService {
         return throwError(e);
       })
     );
+  }
+
+  // Revisa si el error es 401 o 403 y lanza una alerta
+  isNotAuthorized(e): boolean{
+
+    // No autenticado
+    if(e.status == 401){
+
+      // Si el token expiró entonces cierra la sesión
+      if(this._authService.isAuthenticated()){
+        this._authService.logout();
+      }
+      
+      this._router.navigate(['/login']);
+      return true;
+    }
+
+    // Permisos denegados
+    if(e.status == 403){
+      this._router.navigate(['/albums']);
+      $.toast({
+       heading: 'Permiso denegado',
+       text: 'No tiene permiso para acceder a esta sección.',
+       position: 'top-right',
+       loaderBg:'#ff6849',
+       icon: 'warning',
+       hideAfter: 3500,
+       stack: 6
+     });
+      return true;
+    }
+
+    return false;
   }
 }

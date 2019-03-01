@@ -30,7 +30,7 @@
                                 <th>Artista</th>
                                 <th>Género</th>
                                 <th>Duración</th>
-                                <th class="text-nowrap">Acciones</th>
+                                <th *ngIf="_authService.hasRole('ROLE_ADMIN')" class="text-nowrap">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -41,7 +41,7 @@
                                 <td>{{ track.album.artist.name }}</td>
                                 <td>{{ track.album.artist.genre.name }}</td>
                                 <td>{{ track.duration | secondsToMinutes }}</td>
-                                <td class="text-nowrap">
+                                <td *ngIf="_authService.hasRole('ROLE_ADMIN')" class="text-nowrap">
                                     <a [routerLink]="['/tracks/edit/', track.id]" title="Editar" class="link"> <i class="fa fa-pencil m-r-10"></i> </a>
                                     <a (click)="delete(track)" title="Eliminar" class="link"> <i class="fa fa-trash"></i> </a>
                                 </td>

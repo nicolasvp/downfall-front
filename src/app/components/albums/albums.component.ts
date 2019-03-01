@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Album } from '../../interfaces/album';
 import { AlbumService } from '../../services/album.service';
+import { AuthService } from 'src/app/services/auth.service';
 declare var $ :any;
 
 @Component({
@@ -13,7 +14,7 @@ export class AlbumsComponent implements OnInit {
   albums: Album[] = [];
   album_parent: Album;
 
-  constructor(private _albumService: AlbumService) {  }
+  constructor(private _albumService: AlbumService, private _authService: AuthService) {  }
 
   ngOnInit() {
     // Obtiene todos los albums para listarlos

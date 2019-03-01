@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TrackService } from '../../services/track.service';
 import { Track } from '../../interfaces/Track';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 declare var $ :any;
 
 @Component({
@@ -14,7 +15,7 @@ export class TracksComponent implements OnInit {
   tracks: Track[] = [];
   parent_paginator: any;
 
-  constructor(private _trackService: TrackService, private _activedRoute: ActivatedRoute) { }
+  constructor(private _trackService: TrackService, private _activedRoute: ActivatedRoute, private _authService: AuthService) { }
 
   ngOnInit() {
     this._activedRoute.paramMap.subscribe(params => {

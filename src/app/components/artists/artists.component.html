@@ -39,8 +39,8 @@
                     <hr class="m-t-0">
                     <div class="row">
                         <div class="col-md-12">
-                          <a (click)="delete(artist)"><i class="ti-trash pull-right" title="Eliminar"></i></a>
-                          <a [routerLink]="['/artists/edit/', artist.id]"><i class="ti-pencil pull-right" title="Editar"></i></a>
+                          <a *ngIf="_authService.hasRole('ROLE_ADMIN')" (click)="delete(artist)"><i class="ti-trash pull-right" title="Eliminar"></i></a>
+                          <a *ngIf="_authService.hasRole('ROLE_ADMIN')" [routerLink]="['/artists/edit/', artist.id]"><i class="ti-pencil pull-right" title="Editar"></i></a>
                           <a href="#"><i class="ti-eye pull-right" title="Ver detalle"></i></a>
                         </div>
                     </div>

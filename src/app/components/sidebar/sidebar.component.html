@@ -28,25 +28,25 @@
                 <li><a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="ti-music"></i><span class="hide-menu">Géneros</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li> <a [routerLink]="['/genres']" routerLinkActive="active">Todos los géneros</a> </li>
-                        <li> <a [routerLink]="['/genres/add']" routerLinkActive="active">Agregar género</a> </li>
+                        <li *ngIf="_authService.hasRole('ROLE_ADMIN')"> <a [routerLink]="['/genres/add']" routerLinkActive="active">Agregar género</a> </li>
                     </ul>
                 </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="ti-user"></i><span class="hide-menu">Artistas</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li> <a [routerLink]="['/artists']" routerLinkActive="active">Todos los artistas</a> </li>
-                        <li> <a [routerLink]="['/artists/add']" routerLinkActive="active">Agregar artista</a> </li>
+                        <li *ngIf="_authService.hasRole('ROLE_ADMIN')"> <a [routerLink]="['/artists/add']" routerLinkActive="active">Agregar artista</a> </li>
                     </ul>
                 </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="ti-microphone"></i><span class="hide-menu">Álbumes</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li> <a [routerLink]="['/albums']" routerLinkActive="active">Todos los albumes</a> </li>
-                        <li> <a [routerLink]="['/albums/add']" routerLinkActive="active">Agregar album</a> </li>
+                        <li *ngIf="_authService.hasRole('ROLE_ADMIN')"> <a [routerLink]="['/albums/add']" routerLinkActive="active">Agregar album</a> </li>
                     </ul>
                 </li>
                 <li> <a class="has-arrow waves-effect waves-dark" href="#" aria-expanded="false"><i class="ti-music-alt"></i><span class="hide-menu">Canciones</span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li> <a [routerLink]="['/tracks']" routerLinkActive="active">Todas las canciones</a> </li>
-                        <li> <a [routerLink]="['/tracks/add']" routerLinkActive="active">Agregar canción</a> </li>
+                        <li *ngIf="_authService.hasRole('ROLE_ADMIN')"> <a [routerLink]="['/tracks/add']" routerLinkActive="active">Agregar canción</a> </li>
                     </ul>
                 </li>
             </ul>

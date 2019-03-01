@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Genre } from '../../interfaces/Genre';
 import { GenreService } from '../../services/genre.service';
+import { AuthService } from 'src/app/services/auth.service';
 declare var $ :any;
 
 @Component({
@@ -12,7 +13,7 @@ export class GenresComponent implements OnInit {
 
   genres: Genre[] = [];
 
-  constructor(private _genreService: GenreService) { }
+  constructor(private _genreService: GenreService, private _authService: AuthService) { }
 
   ngOnInit() {
     // Obtiene todos los géneros para listarlos

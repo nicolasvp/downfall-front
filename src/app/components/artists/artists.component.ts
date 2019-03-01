@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Artist } from '../../interfaces/Artist';
 import { ArtistService } from '../../services/artist.service';
+import { AuthService } from 'src/app/services/auth.service';
 declare var $ :any;
 
 @Component({
@@ -12,7 +13,7 @@ export class ArtistsComponent implements OnInit {
 
   artists: Artist[] = [];
 
-  constructor(private _artistService: ArtistService) { }
+  constructor(private _artistService: ArtistService, private _authService: AuthService) { }
 
   ngOnInit() {
     // Obtiene todos los artistas para listarlos

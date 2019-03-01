@@ -36,8 +36,8 @@
                                 <div class="el-card-content text-left">
                                     <h5 class="card-title m-b-0">
                                       {{ genre.name }}
-                                      <a (click)="delete(genre)"><i class="ti-trash pull-right" title="Eliminar"></i></a>
-                                      <a [routerLink]="['/genres/edit', genre.id]"><i class="ti-pencil pull-right" title="Editar"></i></a>
+                                      <a *ngIf="_authService.hasRole('ROLE_ADMIN')" (click)="delete(genre)"><i class="ti-trash pull-right" title="Eliminar"></i></a>
+                                      <a *ngIf="_authService.hasRole('ROLE_ADMIN')" [routerLink]="['/genres/edit', genre.id]"><i class="ti-pencil pull-right" title="Editar"></i></a>
                                       <a href=""><i class="ti-eye pull-right" title="Ver detalle"></i></a>
                                     </h5>
                                 </div>

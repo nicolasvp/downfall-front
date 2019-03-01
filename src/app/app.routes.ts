@@ -9,24 +9,25 @@ import { TracksComponent } from './components/tracks/tracks.component';
 import { TrackFormComponent } from './components/tracks/form/form.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const app_routes: Routes = [
-  { path: 'home', component: HomeComponent },
-  { path: 'genres', component: GenresComponent },
-  { path: 'genres/add', component: GenreFormComponent },
-  { path: 'genres/edit/:id', component: GenreFormComponent },
-  { path: 'artists', component: ArtistsComponent },
-  { path: 'artists/add', component: ArtistFormComponent },
-  { path: 'artists/edit/:id', component: ArtistFormComponent },
-  { path: 'albums', component: AlbumsComponent },
-  { path: 'albums/add', component: AlbumFormComponent },
-  { path: 'albums/edit/:id', component: AlbumFormComponent },
-  { path: 'tracks', component: TracksComponent },
-  { path: 'tracks/page/:page_number', component: TracksComponent },
-  { path: 'tracks/add', component: TrackFormComponent },
-  { path: 'tracks/edit/:id', component: TrackFormComponent },
+  { path: 'home', component: HomeComponent, canActivate:[AuthGuard]},
+  { path: 'genres', component: GenresComponent, canActivate:[AuthGuard]},
+  { path: 'genres/add', component: GenreFormComponent, canActivate:[AuthGuard]},
+  { path: 'genres/edit/:id', component: GenreFormComponent, canActivate:[AuthGuard]},
+  { path: 'artists', component: ArtistsComponent, canActivate:[AuthGuard]},
+  { path: 'artists/add', component: ArtistFormComponent, canActivate:[AuthGuard] },
+  { path: 'artists/edit/:id', component: ArtistFormComponent, canActivate:[AuthGuard] },
+  { path: 'albums', component: AlbumsComponent, canActivate:[AuthGuard] },
+  { path: 'albums/add', component: AlbumFormComponent, canActivate:[AuthGuard] },
+  { path: 'albums/edit/:id', component: AlbumFormComponent, canActivate:[AuthGuard] },
+  { path: 'tracks', component: TracksComponent, canActivate:[AuthGuard] },
+  { path: 'tracks/page/:page_number', component: TracksComponent, canActivate:[AuthGuard] },
+  { path: 'tracks/add', component: TrackFormComponent, canActivate:[AuthGuard] },
+  { path: 'tracks/edit/:id', component: TrackFormComponent, canActivate:[AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: '**', pathMatch: 'full', redirectTo: '/home' }
+  { path: '**', pathMatch: 'full', redirectTo: '/home', canActivate:[AuthGuard] }
 ];
 
 export const app_routing = RouterModule.forRoot(app_routes, { useHash: true });
