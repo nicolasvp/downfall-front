@@ -18,29 +18,16 @@ export class ArtistService {
 
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
-  // Agrega token a la cabecera
-  private addAuthorizationToHeaders(){
-    // Obtiene token mediante el getter
-    let token = this._authService.token;
-
-    // Si el token no es nulo lo agrega a las cabeceras
-    if(token != null){
-      return this.httpHeaders.append('Authorization', 'Bearer ' + token);
-    }
-
-    return this.httpHeaders;
-  }
-
   // Obtiene todos los artistas
   getArtists(): Observable<Artist[]>{
     // Se realiza un cast del tipo Artist, tambien se puede hacer con un pipe y map
-    return this._httpClient.get<Artist[]>(this.url, { headers: this.addAuthorizationToHeaders() });
+    return this._httpClient.get<Artist[]>(this.url);
   }
 
   // Guarda el nuevo artista
   // Se deja el tipo de retorno como any por el wraper del responseEntity de Spring
   store(artist: Artist): Observable<any>{
-    return this._httpClient.post<any>(this.url, artist, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.post<any>(this.url, artist).pipe(
       catchError(e => {
 
         if(e.status == 401 || e.status == 403){
@@ -68,7 +55,7 @@ export class ArtistService {
 
   // Obtener los datos para actualizar artista, si obtiene un error desde el backend muestra una alerta y redirige al index de artistas
   getArtist(id: number): Observable<Artist>{
-    return this._httpClient.get<Artist>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.get<Artist>(`${this.url}/${id}`).pipe(
       catchError(e => {
 
         if(e.status == 401 || e.status == 403){
@@ -98,7 +85,7 @@ export class ArtistService {
   // Actualiza los datos del artista
   // Se deja el tipo de retorno como any por el wraper del responseEntity de Spring
   update(artist: Artist): Observable<any>{
-    return this._httpClient.put<any>(`${this.url}/${artist.id}`, artist, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.put<any>(`${this.url}/${artist.id}`, artist).pipe(
       catchError(e => {
 
         if(e.status == 401 || e.status == 403){
@@ -121,7 +108,7 @@ export class ArtistService {
 
   // Elimina el artista
   delete(id: number): Observable<any>{
-    return this._httpClient.delete<any>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.delete<any>(`${this.url}/${id}`).pipe(
       catchError(e => {
 
         if(e.status == 401 || e.status == 403){
@@ -148,7 +135,7 @@ export class ArtistService {
     formData.append("file", file);
     formData.append("id", id);
 
-    return this._httpClient.post(`${this.url}/upload/`, formData, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.post(`${this.url}/upload/`, formData).pipe(
       map( (response: any) => response.artist as Artist),
       catchError(e => {
 
@@ -180,7 +167,7 @@ export class ArtistService {
       if(this._authService.isAuthenticated()){
         this._authService.logout();
       }
-      
+
       this._router.navigate(['/login']);
       return true;
     }

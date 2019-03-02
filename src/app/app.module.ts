@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 // Aca se declaran componentes, servicios, etc de forma global
@@ -35,6 +35,13 @@ import { ArtistService } from './services/artist.service';
 import { AlbumService } from './services/album.service';
 import { TrackService } from './services/track.service';
 
+// Guards
+import { AuthGuard } from './guards/auth.guard';
+
+// Interceptors
+import { TokenInterceptor } from './interceptors/token.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,6 +73,8 @@ import { TrackService } from './services/track.service';
     ArtistService,
     AlbumService,
     TrackService,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

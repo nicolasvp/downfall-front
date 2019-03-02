@@ -19,22 +19,9 @@ export class TrackService {
 
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
-  // Agrega token a la cabecera
-  private addAuthorizationToHeaders(){
-    // Obtiene token mediante el getter
-    let token = this._authService.token;
-
-    // Si el token no es nulo lo agrega a las cabeceras
-    if(token != null){
-      return this.httpHeaders.append('Authorization', 'Bearer ' + token);
-    }
-
-    return this.httpHeaders;
-  }
-
   // Obtiene todos los tracks por página
   getTracks(page: number): Observable<any>{
-    return this._httpClient.get(this.url + '/page/' + page, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.get(this.url + '/page/' + page).pipe(
       map( (response: any) => {
         return response;
       })
@@ -49,7 +36,7 @@ export class TrackService {
     let datePipe = new DatePipe('en-US');
     track.album.releaseDate = datePipe.transform(track.album.releaseDate, 'yyyy-MM-dd');
 
-    return this._httpClient.post<any>(this.url, track, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.post<any>(this.url, track).pipe(
       catchError(e => {
 
         if(e.status == 401 || e.status == 403){
@@ -77,7 +64,7 @@ export class TrackService {
 
   // Obtener los datos para actualizar el track, si obtiene un error desde el backend muestra una alerta y redirige al index de Tracks
   getTrack(id: number): Observable<Track>{
-    return this._httpClient.get<Track>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.get<Track>(`${this.url}/${id}`).pipe(
       catchError(e => {
 
         if(e.status == 401 || e.status == 403){
@@ -112,7 +99,7 @@ export class TrackService {
     let datePipe = new DatePipe('en-US');
     track.album.releaseDate = datePipe.transform(track.album.releaseDate, 'yyyy-MM-dd');
 
-    return this._httpClient.put<any>(`${this.url}/${track.id}`, track, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.put<any>(`${this.url}/${track.id}`, track).pipe(
       catchError(e => {
 
         if(e.status == 401 || e.status == 403){
@@ -135,7 +122,7 @@ export class TrackService {
 
   // Elimina el Track
   delete(id: number): Observable<any>{
-    return this._httpClient.delete<any>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.delete<any>(`${this.url}/${id}`).pipe(
       catchError(e => {
 
         if(e.status == 401 || e.status == 403){
@@ -166,7 +153,7 @@ export class TrackService {
       if(this._authService.isAuthenticated()){
         this._authService.logout();
       }
-      
+
       this._router.navigate(['/login']);
       return true;
     }

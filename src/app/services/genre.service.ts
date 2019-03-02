@@ -18,29 +18,16 @@ export class GenreService {
 
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
-  // Agrega token a la cabecera
-  private addAuthorizationToHeaders(){
-    // Obtiene token mediante el getter
-    let token = this._authService.token;
-
-    // Si el token no es nulo lo agrega a las cabeceras
-    if(token != null){
-      return this.httpHeaders.append('Authorization', 'Bearer ' + token);
-    }
-
-    return this.httpHeaders;
-  }
-
   // Obtiene todos los géneros
   getGenres(): Observable<Genre[]>{
     // Se realiza un cast del tipo Genre, tambien se puede hacer con un pipe y map
-    return this._httpClient.get<Genre[]>(this.url, { headers: this.addAuthorizationToHeaders() });
+    return this._httpClient.get<Genre[]>(this.url);
   }
 
   // Guarda el nuevo género
   // Se deja el tipo de retorno como any por el wraper del responseEntity de Spring
   store(genre: Genre): Observable<any>{
-    return this._httpClient.post<any>(this.url, genre, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.post<any>(this.url, genre).pipe(
       catchError(e => {
 
         // Catch de error de tipo bad request(400) desde el backend, lo enviará hacia el componente para que lo maneje
@@ -63,13 +50,8 @@ export class GenreService {
 
   // Obtener los datos para actualizar género, si obtiene un error desde el back muestra una alerta y redirige al index de generos
   getGenre(id: number): Observable<Genre>{
-    return this._httpClient.get<Genre>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.get<Genre>(`${this.url}/${id}`).pipe(
       catchError(e => {
-
-        if(e.status == 401 || e.status == 403){
-          this.isNotAuthorized(e);
-          return throwError(e);
-        }
 
         // Catch de error de tipo bad request(400) desde el backend, lo enviará hacia el componente para que lo maneje
         if(e.status == 400){
@@ -95,14 +77,9 @@ export class GenreService {
   // Actualiza los datos del género
   // Se deja el tipo de retorno como any por el wraper del responseEntity de Spring
   update(genre: Genre): Observable<any>{
-    return this._httpClient.put<any>(`${this.url}/${genre.id}`, genre, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.put<any>(`${this.url}/${genre.id}`, genre).pipe(
       catchError(e => {
-
-        if(e.status == 401 || e.status == 403){
-          this.isNotAuthorized(e);
-          return throwError(e);
-        }
-
+        
         $.toast({
          heading: 'Error',
          text: e.error.msg,
@@ -119,34 +96,20 @@ export class GenreService {
 
   // Elimina el géneros
   delete(id: number): Observable<any>{
-    return this._httpClient.delete<any>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.delete<any>(`${this.url}/${id}`).pipe(
       catchError(e => {
-
-        if(e.status == 401 || e.status == 403){
-          this.isNotAuthorized(e);
-          return throwError(e);
-        }
-
-        $.toast({
-         heading: 'Error',
-         text: e.error.msg,
-         position: 'top-right',
-         loaderBg:'#ff6849',
-         icon: 'error',
-         hideAfter: 3500
-        });
         return throwError(e);
       })
     );
   }
 
   // Sube la imagen
-  uploadFile(file: File, id): Observable<Genre>{
+  uploadFile(file: File, id: string): Observable<Genre>{
     let formData = new FormData();
     formData.append("file", file);
     formData.append("id", id);
 
-    return this._httpClient.post(`${this.url}/upload/`, formData, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.post(`${this.url}/upload/`, formData).pipe(
       map( (response: any) => response.genre as Genre),
       catchError(e => {
         $.toast({
@@ -160,38 +123,5 @@ export class GenreService {
         return throwError(e);
       })
     );
-  }
-
-  // Revisa si el error es 401 o 403 y lanza una alerta
-  isNotAuthorized(e): boolean{
-
-    // No autenticado
-    if(e.status == 401){
-
-      // Si el token expiró entonces cierra la sesión
-      if(this._authService.isAuthenticated()){
-        this._authService.logout();
-      }
-
-      this._router.navigate(['/login']);
-      return true;
-    }
-
-    // Permisos denegados
-    if(e.status == 403){
-      this._router.navigate(['/genres']);
-      $.toast({
-       heading: 'Permiso denegado',
-       text: 'No tiene permiso para acceder a esta sección.',
-       position: 'top-right',
-       loaderBg:'#ff6849',
-       icon: 'warning',
-       hideAfter: 3500,
-       stack: 6
-     });
-      return true;
-    }
-
-    return false;
   }
 }

@@ -20,22 +20,22 @@ export class AlbumService {
   private httpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
 
   // Agrega token a la cabecera
-  private addAuthorizationToHeaders(){
-    // Obtiene token mediante el getter
-    let token = this._authService.token;
-
-    // Si el token no es nulo lo agrega a las cabeceras
-    if(token != null){
-      return this.httpHeaders.append('Authorization', 'Bearer ' + token);
-    }
-
-    return this.httpHeaders;
-  }
+  // private addAuthorizationToHeaders(){
+  //   // Obtiene token mediante el getter
+  //   let token = this._authService.token;
+  //
+  //   // Si el token no es nulo lo agrega a las cabeceras
+  //   if(token != null){
+  //     return this.httpHeaders.append('Authorization', 'Bearer ' + token);
+  //   }
+  //
+  //   return this.httpHeaders;
+  // }
 
   // Obtiene todos los Albums, recibe un parametro booleano que indica si se debe formatear la fecha del album o no
   getAlbums(mustConvert: boolean): Observable<Album[]>{
     // Se iteran los albums y se cambia el formato de la fecha (releaseDate)
-    return this._httpClient.get(this.url, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.get(this.url).pipe(
       map(response => {
         // Guarda todos los albums en la variable local album
         let albums = response as Album[];
@@ -58,7 +58,7 @@ export class AlbumService {
   // Guarda el nuevo album
   // Se deja el tipo de retorno como any por el wraper del responseEntity de Spring
   store(album: Album): Observable<any>{
-    return this._httpClient.post<any>(this.url, album, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.post<any>(this.url, album).pipe(
       catchError(e => {
 
         if(e.status == 401 || e.status == 403){
@@ -86,7 +86,7 @@ export class AlbumService {
 
   // Obtener los datos para actualizar Album, si obtiene un error desde el backend muestra una alerta y redirige al index de Albums
   getAlbum(id: number): Observable<Album>{
-    return this._httpClient.get<Album>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.get<Album>(`${this.url}/${id}`).pipe(
       map(
         album => {
             // Formatea la fecha utilizando DatePipe
@@ -125,7 +125,7 @@ export class AlbumService {
   // Actualiza los datos del Album
   // Se deja el tipo de retorno como any por el wraper del responseEntity de Spring
   update(album: Album): Observable<any>{
-    return this._httpClient.put<any>(`${this.url}/${album.id}`, album, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.put<any>(`${this.url}/${album.id}`, album).pipe(
       catchError(e => {
 
         if(e.status == 401 || e.status == 403){
@@ -148,7 +148,7 @@ export class AlbumService {
 
   // Elimina el Albuma
   delete(id: number): Observable<any>{
-    return this._httpClient.delete<any>(`${this.url}/${id}`, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.delete<any>(`${this.url}/${id}`).pipe(
       catchError(e => {
 
         if(e.status == 401 || e.status == 403){
@@ -175,7 +175,7 @@ export class AlbumService {
     formData.append("file", file);
     formData.append("id", id);
 
-    return this._httpClient.post(`${this.url}/upload/`, formData, { headers: this.addAuthorizationToHeaders() }).pipe(
+    return this._httpClient.post(`${this.url}/upload/`, formData).pipe(
       map( (response: any) => response.album as Album),
       catchError(e => {
 
@@ -207,7 +207,7 @@ export class AlbumService {
       if(this._authService.isAuthenticated()){
         this._authService.logout();
       }
-      
+
       this._router.navigate(['/login']);
       return true;
     }
